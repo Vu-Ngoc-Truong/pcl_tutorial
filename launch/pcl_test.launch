@@ -1,0 +1,27 @@
+<launch>
+    <!-- Arguments -->
+    <!-- <arg name="pcd_file" default="$(find docking)/pcd/mkac_vl_marking.pcd"/> -->
+    <arg name="pcd_file" default="$(find pcl_tutorial)/pcd/table_scene_lms400.pcd"/>
+    <arg name="pcd_file1" default="$(find pcl_tutorial)/pcd/table_scene_lms400_downsampled2.pcd"/>
+
+    <!-- Use this package: http://wiki.ros.org/pcl_ros -->
+    <node pkg="pcl_ros" type="pcd_to_pointcloud" name="pcd_to_pointcloud" output="screen" respawn="false" clear_params="true" >
+        <param name="file_name" value="$(arg pcd_file)"/>
+		<param name="frame_id" value="map"/>
+        <param name="interval" value="1.0"/>
+    </node>
+
+    <node pkg="pcl_ros" type="pcd_to_pointcloud" name="pcd_to_pointcloud1" output="screen" respawn="false" clear_params="true" >
+        <param name="file_name" value="$(arg pcd_file1)"/>
+		<param name="frame_id" value="pcd1"/>
+        <param name="interval" value="1.0"/>
+        <remap from="/cloud_pcd" to="/cloud_downsampled"/>
+    </node>
+
+    <node pkg="tf2_ros" type="static_transform_publisher" name="static_transform_publisher_1" args="1 1 2 0 0 0  map pcd1" />
+
+    <node pkg="pcl_tutorial" type="pcl_sub_node" name="sub_point_clound_filter" output="screen"  >
+        <remap from="points2" to="/cloud_filter1"/>
+    </node>
+
+</launch>

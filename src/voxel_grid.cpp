@@ -22,7 +22,7 @@ int main()
     sor.setInputCloud(cloud);
 
     // filter is created with a leaf size of 1cm,
-    sor.setLeafSize(0.01f, 0.01f, 0.01f);
+    sor.setLeafSize(0.02f, 0.02f, 0.02f);
     // and the output is computed and stored in cloud_filtered.
     sor.filter(*cloud_filtered);
 
